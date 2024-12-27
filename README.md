@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # ReWheel Repository
 
 **ReWheel** is an automotive parts tracking web application built with Flask, SQLAlchemy, WTForms, and Bootstrap. Developed as part of the Full-Stack Web Development course at HWR Berlin, this repository contains the full codebase and documentation with GitHub Pages.
@@ -53,6 +52,3 @@ Go to [http://127.0.0.1:5000/](http://127.0.0.1:5000/) to view the main page and
 - **Part Offering**: Suppliers can add new automotive parts with details like price, quantity, and estimated delivery.
 - **Catalogue**: Customers can browse available parts and view detailed information if logged in.
 - **Buying and Selling**: Facilitates transactions through PartWatch’s marketplace.
-=======
-# ReWheel
->>>>>>> 8d47fdc36f54113b29618f9d90756dea3297f3ec
