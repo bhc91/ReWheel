@@ -8,6 +8,7 @@ class User(db.Model, UserMixin):
     email = db.Column(db.String(150), unique=True, nullable=False)
     password = db.Column(db.String(200), nullable=False)
     role = db.Column(db.String(50), nullable=False)
+    supplier_eco_certified = db.Column(db.Boolean, default=False, nullable=False)
 
 class Part(db.Model):
     id = db.Column(db.Integer, primary_key=True)

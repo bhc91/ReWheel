@@ -1,12 +1,12 @@
 /* Variables */
 :root {
     /* Color palette */
-    --primary-color: #2d5b5e;
-    --primary-light: #597f82;
-    --text-light: #e6f1f2;
-    --border-color: #808080;
-    --blue-color: #1e90ff;
-    --blue-light: #63b8ff;
+    --primary-color: #07774a; /* Updated to new color */
+    --primary-light: #85a485; /* Updated to new color */
+    --text-light: #ffffff; /* Updated to match logo */
+    --border-color: #d1d1d1; /* Updated to match logo */
+    --blue-color: #50e3c2; /* Updated to match logo */
+    --blue-light: #8ef2d9; /* Updated to match logo */
     
     /* Spacing & Layout */
     --spacing-sm: 8px;

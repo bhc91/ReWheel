@@ -28,7 +28,7 @@ Updated
 
 ### Problem statement
 
-We need a way to handle database operations for our automotive parts application, **PartWatch**. The application includes user registration, roles, parts listings and purchases. We need to decide on an efficient way to interact with our SQLite database that will also support future scalability when we move to a more robust database.
+We need a way to handle database operations for our automotive parts application, **ReWheel**. The application includes user registration, roles, parts listings and purchases. We need to decide on an efficient way to interact with our SQLite database that will also support future scalability when we move to a more robust database.
 
 ### Decision
 
@@ -268,4 +268,4 @@ We implemented a session-based shopping cart that allows users to add, view, and
 
 ---
 
-This document outlines the principal design decisions made for **PartWatch**, together with an overview of the options considered. The decisions reflect the project's current requirements and priorities, and they strike a balance between simplicity and scalability for future growth.
+This document outlines the principal design decisions made for **ReWheel**, together with an overview of the options considered. The decisions reflect the project's current requirements and priorities, and they strike a balance between simplicity and scalability for future growth.

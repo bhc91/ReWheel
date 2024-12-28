@@ -7,7 +7,7 @@
 <div class="row justify-content-center">
     <div class="col-md-8 col-lg-6">
         <div class="card shadow">
-            <div class="card-header" style="background: #2d5b5e; color: white;">
+            <div class="card-header" style="background: var(--primary-color); color: var(--text-light);">
                 <h2 class="mb-0">Profile Settings</h2>
             </div>
             <div class="card-body">
@@ -29,7 +29,7 @@
                     </div>
 
                     <hr class="my-4">
-                    <h5 class="mb-3" style="color: #2d5b5e;">Change Password (optional)</h5>
+                    <h5 class="mb-3" style="color: var(--primary-color);">Change Password (optional)</h5>
 
                     <div class="mb-3">
                         {{ render_field(form.new_password,
@@ -47,9 +47,23 @@
                     </div>
 
                     <div class="d-grid gap-2">
-                        {{ form.submit(class="btn btn-primary custom-button", style="background-color: #2d5b5e; border-color: #2d5b5e;") }}
+                        {{ form.submit(class="btn btn-primary custom-button", style="background-color: var(--primary-color); border-color: var(--primary-color);") }}
                     </div>
                 </form>
+                
+                {% if current_user.role == 'supplier' %}
+                    <hr class="my-4">
+                    <h5 class="mb-3" style="color: var(--primary-color);">Environmental Certification</h5>
+                    <form method="POST" action="{{ url_for('toggle_eco_badge') }}">
+                        <button type="submit" class="btn custom-button">
+                            {% if current_user.supplier_eco_certified %}
+                                <i class="fas fa-leaf"></i> Disable Eco Badge
+                            {% else %}
+                                <i class="fas fa-leaf"></i> Enable Eco Badge
+                            {% endif %}
+                        </button>
+                    </form>
+                {% endif %}
             </div>
         </div>
     </div>

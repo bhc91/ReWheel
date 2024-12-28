@@ -191,47 +191,43 @@ def logout():
 @app.route('/profile', methods=['GET', 'POST'])
 @login_required
 def profile():
-    """Allow users to update their profile information."""
     form = ProfileForm()
     if form.validate_on_submit():
         # Verify current password
         if not check_password_hash(current_user.password, form.current_password.data):
             flash('Current password is incorrect.', 'danger')
-            logger.warning(f"Incorrect password attempt by user: {current_user.username}")
             return redirect(url_for('profile'))
 
         # Check if new password is different
         if form.new_password.data and check_password_hash(current_user.password, form.new_password.data):
             flash('New password must be different from your current password.', 'danger')
-            logger.warning(f"User {current_user.username} attempted to set the same password.")
             return redirect(url_for('profile'))
 
         # Check if email is changing and if it's unique
         if form.email.data != current_user.email:
             if User.query.filter_by(email=form.email.data).first():
                 flash('This email address is already in use.', 'danger')
-                logger.warning(f"User {current_user.username} attempted to change to an existing email: {form.email.data}")
                 return redirect(url_for('profile'))
             current_user.email = form.email.data
-            logger.info(f"User {current_user.username} changed email to: {form.email.data}")
 
         # Update password if provided
         if form.new_password.data:
             current_user.password = generate_password_hash(form.new_password.data)
-            logger.info(f"User {current_user.username} updated their password.")
+
+        # Get eco-badge toggle from hidden field
+        supplier_eco_certified_input = request.form.get('supplier_eco_certified')
+        current_user.supplier_eco_certified = (supplier_eco_certified_input == 'true')
 
         try:
             db.session.commit()
             flash('Profile updated successfully!', 'success')
-            logger.info(f"User {current_user.username} updated their profile.")
-            return redirect(url_for('index'))
+            return redirect(url_for('profile'))
         except SQLAlchemyError as e:
             db.session.rollback()
             flash('An error occurred while updating your profile. Please try again.', 'danger')
-            logger.error(f"Error updating profile for user {current_user.username}: {e}")
             return redirect(url_for('profile'))
 
-    # Pre-fill form with current email
+    # Pre-fill form with current email and eco badge status
     form.email.data = current_user.email
     return render_template('profile.html', form=form)
 
@@ -516,6 +512,20 @@ def my_orders():
 def faq():
     """Display the FAQ page."""
     return render_template('faq.html')
+
+
+@app.route('/toggle_eco_badge', methods=['POST'])
+@login_required
+def toggle_eco_badge():
+    if current_user.role == 'supplier':
+        current_user.supplier_eco_certified = not current_user.supplier_eco_certified
+        try:
+            db.session.commit()
+            flash('Eco Badge status updated successfully!', 'success')
+        except SQLAlchemyError as e:
+            db.session.rollback()
+            flash('An error occurred while updating your Eco Badge status. Please try again.', 'danger')
+    return redirect(url_for('profile'))
 
 
 # Main Execution

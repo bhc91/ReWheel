@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{% block TITLE %}{% endblock %} - PartWatch</title>
+    <title>{% block TITLE %}{% endblock %} - ReWheel</title>
     {{ bootstrap.load_css() }}
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
@@ -20,7 +20,7 @@
     <div class="main-container">
         <div class="container-fluid border shadow pb-3 my-3">
 
-            <nav class="navbar navbar-expand-xl border-bottom mb-3" style="background: #2d5b5e; border-radius: 8px;">
+            <nav class="navbar navbar-expand-xl border-bottom mb-3" style="background: var(--primary-color); border-radius: 8px;">
                 <div class="container-fluid px-0">
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                             data-bs-target="#navbarSupportedContent"

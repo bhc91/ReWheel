@@ -42,7 +42,12 @@
                         <div class="card-body">
                             <h5 class="card-title">{{ part.name }}</h5>
                             {% if current_user.is_authenticated %}
-                                <p class="card-text"><strong>Supplier:</strong> {{ part.supplier }}</p>
+                                <p class="card-text">
+                                    <strong>Supplier:</strong> {{ part.supplier.username }}
+                                    {% if part.supplier.supplier_eco_certified %}
+                                        <i class="fas fa-leaf text-success" title="Environmentally Certified Supplier"></i>
+                                    {% endif %}
+                                </p>
                                 <p class="card-text"><strong>Manufacturer:</strong> {{ part.manufacturer }}</p>
                                 <p class="card-text"><strong>Model:</strong> {{ part.model }}</p>
                                 <p class="card-text"><strong>Price:</strong> ${{ part.price }}</p>
