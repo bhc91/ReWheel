@@ -5,7 +5,7 @@
 ## Repository Contents
 
 > **Note:** 
-In addition to code, this repository includes a basic setup for GitHub Pages documentation in the **`/docs`** folder or at [GitHub Pages](https://timluh98.github.io/FS-Webapp/).
+In addition to code, this repository includes a basic setup for GitHub Pages documentation in the **`/docs`** folder or at [GitHub Pages](https://bhc91.github.io/ReWheel/).
 
 ## Steps to Execute the App
 
