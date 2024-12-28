@@ -1,6 +1,6 @@
 # ReWheel Repository
 
-**ReWheel** is an automotive parts tracking web application built with Flask, SQLAlchemy, WTForms, and Bootstrap. Developed as part of the Full-Stack Web Development course at HWR Berlin, this repository contains the full codebase and documentation with GitHub Pages.
+**ReWheel** is an automotive parts tracking web application built with Flask, SQLAlchemy, WTForms, and Bootstrap. Developed as part of the E-Business & Digitale Geschäftsmodelle course at HWR Berlin, this repository contains the full codebase and documentation with GitHub Pages.
 
 ## Repository Contents
 
