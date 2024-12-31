@@ -38,7 +38,7 @@ These personas address the needs of both ends of the automotive parts market, pr
 
 **Customer Journey:**
 
-1. **Landing on PartWatch**: Users visit the main page where they can view sample part listings and register or log in. New users must create an account to access the catalogue and its listings.
+1. **Landing on ReWheel**: Users visit the main page where they can view sample part listings and register or log in. New users must create an account to access the catalogue and its listings.
    
 2. **Exploring the Catalogue**: Logged-in users can browse the available parts. Customers see details like supplier information, availability, and pricing.
 
