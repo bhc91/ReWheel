@@ -5,7 +5,7 @@ nav_order: 2
 ---
 
 {: .label }
-[PartWatch Documentation]
+[ReWheel Documentation]
 
 {: .no_toc }
 # Data Model
@@ -21,7 +21,7 @@ nav_order: 2
 {: toc }
 </details>
 
-The **PartWatch** data model is composed of three primary tables: `User`, `Part`, and `Purchase`. These tables work together to support the main functionalities of the application, including user management, part listing, and transaction tracking. This section provides an overview of each table and their relationships within the application.
+The **ReWheel** data model is composed of three primary tables: `User`, `Part`, and `Purchase`. These tables work together to support the main functionalities of the application, including user management, part listing, and transaction tracking. This section provides an overview of each table and their relationships within the application.
 
 ---
 
@@ -85,4 +85,4 @@ The `Purchase` table logs transactions between customers and suppliers, includin
 - **Data Validation**: Enforce validation on fields like `quantity` and `price` to ensure data integrity.
 - **Indexing**: Fields such as `email` in `User` and `id` in all tables can be indexed to improve query performance.
 
-This data model structure allows **PartWatch** to efficiently manage users, automotive parts, and purchase transactions, ensuring data consistency and security throughout the application.
+This data model structure allows **ReWheel** to efficiently manage users, automotive parts, and purchase transactions, ensuring data consistency and security throughout the application.
