@@ -22,7 +22,7 @@ In the automotive industry, individuals and small businesses often struggle to k
 
 ## Our solution
 
-**PartWatch** is a B2C web application designed to streamline the automotive parts purchasing process for both customers and suppliers. Through a user-friendly platform, **PartWatch** connects suppliers, who can list their automotive parts along with details such as pricing, availability and delivery times, with customers who need these parts. The application provides an easy-to-use catalogue for customers to browse and buy, with access to detailed product information upon login. For suppliers, it provides a simple interface to upload and manage their listings, making it easier to reach potential buyers without the traditional marketing overheads.
+**ReWheel** is a B2C web application designed to streamline the automotive parts purchasing process for both customers and suppliers. Through a user-friendly platform, **ReWheel** connects suppliers, who can list their automotive parts along with details such as pricing, availability and delivery times, with customers who need these parts. The application provides an easy-to-use catalogue for customers to browse and buy, with access to detailed product information upon login. For suppliers, it provides a simple interface to upload and manage their listings, making it easier to reach potential buyers without the traditional marketing overheads.
 
 ## Target user
 
@@ -38,7 +38,7 @@ These personas address the needs of both ends of the automotive parts market, pr
 
 **Customer Journey:**
 
-1. **Landing on PartWatch**: Users visit the main page where they can view sample part listings and register or log in. New users must create an account to access the catalogue and its listings.
+1. **Landing on ReWheel**: Users visit the main page where they can view sample part listings and register or log in. New users must create an account to access the catalogue and its listings.
    
 2. **Exploring the Catalogue**: Logged-in users can browse the available parts. Customers see details like supplier information, availability, and pricing.
 

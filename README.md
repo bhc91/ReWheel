@@ -51,4 +51,4 @@ Go to [http://127.0.0.1:5000/](http://127.0.0.1:5000/) to view the main page and
 - **User Authentication**: Secure login and registration, with separate roles for "customer" and "supplier".
 - **Part Offering**: Suppliers can add new automotive parts with details like price, quantity, and estimated delivery.
 - **Catalogue**: Customers can browse available parts and view detailed information if logged in.
-- **Buying and Selling**: Facilitates transactions through PartWatch’s marketplace.
+- **Buying and Selling**: Facilitates transactions through ReWheel’s marketplace.

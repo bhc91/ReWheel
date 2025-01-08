@@ -19,7 +19,7 @@ nav_order: 1
 
 ## Overview
 
-PartWatch is a Flask-based web application that facilitates the buying and selling of automotive parts. It implements a B2C marketplace model where suppliers can list parts and customers can browse and purchase them. The application uses SQLAlchemy for database operations, WTForms for form handling, and Bootstrap for the frontend UI.
+ReWheel is a Flask-based web application that facilitates the buying and selling of automotive parts. It implements a B2C marketplace model where suppliers can list parts and customers can browse and purchase them. The application uses SQLAlchemy for database operations, WTForms for form handling, and Bootstrap for the frontend UI.
 
 ```mermaid
 graph TD
@@ -50,7 +50,7 @@ graph TD
 The application follows a typical Flask project structure:
 
 ```
-PartWatch/
+ReWheel/
 ├── app.py                  # Application entry point
 ├── templates/             
 │   ├── base.html          # Base template

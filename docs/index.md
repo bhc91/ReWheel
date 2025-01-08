@@ -3,7 +3,7 @@ title: Home
 nav_order: 0
 ---
 
-# PartWatch
+# ReWheel
 
 The Automotive Parts Availability Tracker is a straightforward web application that assists manufacturers and customers in monitoring the availability and pricing of automotive parts across a range of suppliers. 
 
