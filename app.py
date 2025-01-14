@@ -106,7 +106,7 @@ def index():
 
 @app.route('/catalogue')
 def catalogue():
-    query = Part.query
+    query = Part.query.filter_by(deleted=False)  # Only show non-deleted parts
     search = request.args.get('search', '')
     manufacturer = request.args.get('manufacturer', '')
     price_order = request.args.get('price_order', '')
@@ -118,9 +118,22 @@ def catalogue():
     if price_order:
         query = query.order_by(Part.price.asc() if price_order == 'asc' else Part.price.desc())
 
+    supplier_orders_count = 0
+    if current_user.is_authenticated and current_user.role == 'supplier':
+        supplier_orders = (Order.query
+            .join(Purchase)
+            .join(Part)
+            .filter(Part.supplier_id == current_user.id)
+            .filter(Order.payment_status == 'paid')
+            .filter(Order.shipping_status == 'pending')
+            .distinct()
+            .count())
+        supplier_orders_count = supplier_orders
+
     return render_template('catalogue.html', 
                          parts=query.all(),
-                         manufacturers=Part.query.with_entities(Part.manufacturer).distinct().all())
+                         manufacturers=Part.query.with_entities(Part.manufacturer).distinct().all(),
+                         supplier_orders_count=supplier_orders_count)
 
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -350,24 +363,46 @@ def edit_part(part_id):
 @app.route('/delete-part/<int:part_id>', methods=['POST'])
 @login_required
 def delete_part(part_id):
-    """Delete a part offered by the supplier."""
+    """Archive a part."""
     part = Part.query.get_or_404(part_id)
     if part.supplier_id != current_user.id:
-        flash('You do not have permission to delete this part.', 'danger')
+        flash('You do not have permission to archive this part.', 'danger')
         logger.warning(f"User {current_user.username} attempted to delete part ID: {part_id} they do not own.")
         abort(403)
 
     try:
-        db.session.delete(part)
+        part.deleted = True
+        part.availability = 'Out of Stock'  # Update availability when archived
         db.session.commit()
-        flash('Part deleted successfully!', 'success')
+        flash('Part archived successfully!', 'success')
         logger.info(f"User {current_user.username} deleted part ID: {part_id}")
     except SQLAlchemyError as e:
         db.session.rollback()
-        flash('An error occurred while deleting the part. Please try again.', 'danger')
-        logger.error(f"Error deleting part ID: {part_id} by user {current_user.username}: {e}")
+        flash('An error occurred while archiving the part. Please try again.', 'danger')
+        logger.error(f"Error archiving part ID: {part_id} by user {current_user.username}: {e}")
 
-    return redirect(url_for('catalogue'))
+    return redirect(url_for('my_listings'))
+
+@app.route('/restore-part/<int:part_id>', methods=['POST'])
+@login_required
+def restore_part(part_id):
+    """Restore an archived part."""
+    part = Part.query.get_or_404(part_id)
+    if part.supplier_id != current_user.id:
+        flash('You do not have permission to restore this part.', 'danger')
+        abort(403)
+
+    try:
+        part.deleted = False
+        part.update_availability()
+        db.session.commit()
+        flash('Part restored successfully!', 'success')
+    except SQLAlchemyError as e:
+        db.session.rollback()
+        flash('An error occurred while restoring the part.', 'danger')
+        logger.error(f"Error restoring part ID: {part_id}: {e}")
+
+    return redirect(url_for('my_listings'))
 
 @app.route('/add_to_cart/<int:part_id>', methods=['POST'])
 @login_required
@@ -501,6 +536,54 @@ def purchase_cart():
         logger.error(f"Error during purchase: {str(e)}")
         return redirect(url_for('cart'))
 
+@app.route('/confirm_payment/<int:order_id>', methods=['POST'])
+@login_required
+def confirm_payment(order_id):
+    order = Order.query.get_or_404(order_id)
+    if order.user_id != current_user.id:
+        flash('You can only confirm payment for your own orders.', 'danger')
+        return redirect(url_for('my_orders'))
+    
+    if order.payment_status == 'pending':
+        order.payment_status = 'paid'
+        db.session.commit()
+        flash('Payment confirmed. Supplier has been notified to ship your order.', 'success')
+    return redirect(url_for('my_orders'))
+
+@app.route('/confirm_shipping/<int:order_id>', methods=['POST'])
+@login_required
+def confirm_shipping(order_id):
+    order = Order.query.get_or_404(order_id)
+    is_supplier = any(
+        purchase.part.supplier_id == current_user.id 
+        for purchase in order.purchases
+    )
+    
+    if not is_supplier:
+        flash('You can only confirm shipping for orders containing your parts.', 'danger')
+        return redirect(url_for('my_orders'))
+    
+    if order.shipping_status == 'pending' and order.payment_status == 'paid':
+        order.update_shipping_status('shipped')
+        db.session.commit()
+        flash('Shipping confirmed. Customer has been notified.', 'success')
+    return redirect(url_for('my_orders'))
+
+@app.route('/confirm_completion/<int:order_id>', methods=['POST'])
+@login_required
+def confirm_completion(order_id):
+    order = Order.query.get_or_404(order_id)
+    if order.user_id != current_user.id:
+        flash('You can only confirm completion for your own orders.', 'danger')
+        return redirect(url_for('my_orders'))
+    
+    if order.completion_status == 'pending' and order.shipping_status == 'shipped':
+        order.completion_status = 'completed'
+        db.session.commit()
+        flash('Order completion confirmed. Thank you for your purchase!', 'success')
+    return redirect(url_for('my_orders'))
+
+
 @app.route('/my_orders')
 @login_required
 def my_orders():
@@ -527,6 +610,17 @@ def toggle_eco_badge():
             flash('An error occurred while updating your Eco Badge status. Please try again.', 'danger')
     return redirect(url_for('profile'))
 
+@app.route('/imprint')
+def imprint():
+    return render_template('imprint.html')
+
+@app.route('/terms')
+def terms():
+    return render_template('terms.html')
+
+@app.route('/privacy')
+def privacy():
+    return render_template('privacy.html')
 
 # Main Execution
 if __name__ == '__main__':

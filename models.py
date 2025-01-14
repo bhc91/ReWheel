@@ -1,5 +1,6 @@
 from db import db
 from flask_login import UserMixin
+from flask import url_for
 from datetime import datetime
 
 class User(db.Model, UserMixin):
@@ -8,7 +9,7 @@ class User(db.Model, UserMixin):
     email = db.Column(db.String(150), unique=True, nullable=False)
     password = db.Column(db.String(200), nullable=False)
     role = db.Column(db.String(50), nullable=False)
-    supplier_eco_certified = db.Column(db.Boolean, default=False, nullable=False)
+    supplier_eco_certified = db.Column(db.Boolean, default=False, nullable=False)  # Keep eco badge
 
 class Part(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -24,6 +25,13 @@ class Part(db.Model):
     manufacturer = db.Column(db.String(100), nullable=False)  
     model = db.Column(db.String(100), nullable=False)
     purchases = db.relationship('Purchase', back_populates='part', lazy=True)
+    deleted = db.Column(db.Boolean, default=False)  # Soft delete flag
+
+    @property
+    def image_url(self):
+        if self.image:
+            return url_for('static', filename=f'images/{self.image}')
+        return url_for('static', filename='images/default.png')
 
     def update_availability(self):
         self.availability = 'Out of Stock' if self.quantity <= 0 else 'In Stock'
@@ -38,15 +46,27 @@ class Order(db.Model):
     payment_reference = db.Column(db.String(100), nullable=True)
     payment_date = db.Column(db.DateTime, nullable=True)
     purchases = db.relationship('Purchase', back_populates='order', lazy=True)
+    shipping_status = db.Column(db.String(20), nullable=False, default='pending')
+    completion_status = db.Column(db.String(20), nullable=False, default='pending')
+    shipping_name = db.Column(db.String(150), nullable=True)
+    shipping_address = db.Column(db.Text, nullable=True)
 
     def update_payment_status(self, status):
         self.payment_status = status
         if status == 'paid':
             self.payment_date = datetime.utcnow()
 
+    def update_shipping_status(self, status):
+        self.shipping_status = status
+        db.session.commit()
+
+    def update_completion_status(self, status):
+        self.completion_status = status
+        db.session.commit()
+
 class Purchase(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    order_id = db.Column(db.Integer, db.ForeignKey('order.id'), nullable=False)
+    order_id = db.Column(db.Integer, db.ForeignKey('order.id'), nullable=True)  # Changed to nullable=True
     order = db.relationship('Order', back_populates='purchases', lazy=True)
     part_id = db.Column(db.Integer, db.ForeignKey('part.id'), nullable=False)
     part = db.relationship('Part', back_populates='purchases', lazy=True)
